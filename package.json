@@ -1,0 +1,40 @@
+{
+  "name": "dog-desktop-pet",
+  "version": "0.1.0",
+  "description": "ビスケット — 画面に常駐して撫でると反応する愛犬デスクトップマスコット",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --mac",
+    "pack": "electron-builder --dir --mac"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.takuya.dog-desktop-pet",
+    "productName": "Biscuit",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "style.css",
+      "renderer.js",
+      "assets/**/*"
+    ],
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.entertainment",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "extendInfo": {
+        "CFBundleDisplayName": "ビスケット"
+      }
+    }
+  }
+}

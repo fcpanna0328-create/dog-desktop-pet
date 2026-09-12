@@ -1,0 +1,47 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* Dragging is handled manually in renderer.js (mousedown + mousemove -> IPC
+     to move the window). Deliberately NOT using -webkit-app-region: drag:
+     on macOS that hands cursor rendering over to the OS's native drag
+     handling, which ignores any custom CSS cursor and always shows the
+     plain arrow -- exactly the "手のひらに変わらない" symptom. Doing the
+     drag ourselves keeps the cursor style under our control. */
+  cursor: grab;
+}
+
+#stage.dragging {
+  cursor: grabbing;
+}
+
+/* The flip (facing left/right) lives on this wrapper, kept separate from
+   the sprite itself, which now just swaps src between animation frames. */
+#flipWrap {
+  transition: transform 0.15s ease-out;
+}
+
+#flipWrap.flip {
+  transform: scaleX(-1);
+}
+
+#sprite {
+  display: block;
+  max-height: 147px; /* 2/3 of the original 220px */
+  max-width: 90%;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
