@@ -1,0 +1,298 @@
+:root {
+  --paper: #fbf6ee;
+  --paper-2: #f4ebdd;
+  --ink: #3a2f27;
+  --ink-soft: #76675a;
+  --line: #e6dac8;
+  --accent: #d9773a;
+  --accent-deep: #bf6229;
+  --font: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "ヒラギノ丸ゴ ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --s: 1; /* the dog's scale, set from site.js by window width */
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* room at the end of the page so the last lines can scroll up above
+     the dog napping in the corner */
+  padding-bottom: calc(150px * var(--s));
+}
+
+img { max-width: 100%; }
+a { color: inherit; }
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: .9em;
+  background: var(--paper-2);
+  padding: .05em .35em;
+  border-radius: 4px;
+}
+
+/* ---- touch vs pointer copy ---- */
+.lead-touch { display: none; }
+@media (hover: none) {
+  .lead-pointer { display: none; }
+  .lead-touch { display: inline; }
+}
+
+/* keep each phrase on one line; break only between phrases */
+.nw { display: inline-block; }
+
+/* ---- header ---- */
+.site-head {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 18px;
+  text-decoration: none;
+  letter-spacing: .04em;
+}
+.head-link {
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 6px 16px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+}
+.head-link:hover { background: var(--ink); color: var(--paper); }
+
+/* ---- hero ---- */
+.hero {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(40px, 9vh, 96px) 24px 0;
+  text-align: center;
+}
+h1 {
+  font-size: clamp(22px, 4.4vw, 52px);
+  line-height: 1.35;
+  font-weight: 900;
+  margin: 0 0 16px;
+  letter-spacing: .02em;
+}
+.lead {
+  color: var(--ink-soft);
+  font-size: clamp(15px, 1.7vw, 18px);
+  margin: 0;
+}
+
+/* ---- download ---- */
+.download {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: clamp(40px, 8vh, 80px) 24px 40px;
+}
+.download-card {
+  text-align: center;
+  background: var(--paper-2);
+  border-radius: 28px;
+  padding: 40px 28px 44px;
+}
+h2 {
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 900;
+  margin: 0 0 4px;
+  letter-spacing: .03em;
+}
+.download-lead { margin: 0 0 22px; color: var(--ink-soft); }
+.btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 16px 48px 14px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 900;
+  font-size: 19px;
+  letter-spacing: .04em;
+  line-height: 1.3;
+  text-decoration: none;
+  box-shadow: 0 10px 22px -10px rgba(191, 98, 41, .8);
+  transition: background .15s ease, transform .15s ease;
+}
+.btn small { font-size: 12px; font-weight: 500; opacity: .9; letter-spacing: .02em; }
+.btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+.steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 36px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 2px 0 0 52px;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 900;
+}
+.steps strong { display: block; color: var(--ink); font-size: 16px; }
+.req {
+  margin: 28px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---- footer ---- */
+.site-foot {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px 24px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.site-foot p { margin: 0; }
+
+/* ---- the dog ----
+   Same box as the app's window (173x200, sprite bottom-aligned inside),
+   fixed to the browser window the way the app sits on the real screen. */
+.dog {
+  --dw: calc(173px * var(--s));
+  position: fixed;
+  left: 0;
+  bottom: 0; /* anchored to the bottom so it tracks mobile toolbars */
+  width: var(--dw);
+  height: calc(var(--dw) * 200 / 173);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+  z-index: 100;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  visibility: hidden; /* until site.js has placed it */
+}
+.dog.placed { visibility: visible; }
+.dog.dragging { cursor: grabbing; }
+.dog .flip {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  transition: transform .15s ease-out;
+}
+.dog .flip.flipped { transform: scaleX(-1); }
+.dog img {
+  display: block;
+  max-height: 73.5%;
+  max-width: 90%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+/* a soft contact shadow so the dog sits on something */
+.dog::after {
+  content: "";
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 1%;
+  height: 6%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(40, 30, 20, .22), transparent);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  bottom: 66%;
+  /* --nudge keeps the bubble inside the window when the dog is near an
+     edge (set from site.js); the arrow stays pointing at the dog. */
+  transform: translateX(calc(-50% + var(--nudge, 0px)));
+  white-space: nowrap;
+  font-size: clamp(12px, calc(14px * var(--s)), 14px);
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+  padding: .45em 1em;
+  border-radius: 999px;
+  box-shadow: 0 6px 16px -6px rgba(58,47,39,.4);
+  pointer-events: none;
+  transition: opacity .4s ease, transform .4s ease;
+  animation: hint-bob 2.4s ease-in-out infinite;
+}
+.hint::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  margin-left: calc(-6px - var(--nudge, 0px));
+  border: 6px solid transparent;
+  border-top-color: #fff;
+}
+@media (max-width: 480px) { h1 { font-size: 6.2vw; } }
+
+/* the bubble is for the first impression; once you're reading further
+   down, it would only sit on top of the text */
+.dog.petted .hint,
+.dog.awake .hint,
+.scrolled .dog .hint { opacity: 0; transform: translateX(calc(-50% + var(--nudge, 0px))) translateY(6px); animation: none; }
+@keyframes hint-bob {
+  0%, 100% { transform: translateX(calc(-50% + var(--nudge, 0px))) translateY(0); }
+  50% { transform: translateX(calc(-50% + var(--nudge, 0px))) translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) { .hint { animation: none; } }
+
+.heart {
+  position: absolute;
+  bottom: 55%;
+  font-size: clamp(13px, calc(20px * var(--s)), 20px);
+  color: #ef6b84;
+  pointer-events: none;
+  animation: heart-up 1.3s ease-out forwards;
+}
+@keyframes heart-up {
+  0% { opacity: 0; transform: translateY(0) scale(.6); }
+  20% { opacity: 1; transform: translateY(-8px) scale(1); }
+  100% { opacity: 0; transform: translateY(-46px) scale(.9); }
+}

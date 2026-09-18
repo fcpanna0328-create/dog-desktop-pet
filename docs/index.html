@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ビスケット — あなたのMacに住みつく、撫でると起きる犬</title>
+<meta name="description" content="画面のすみで、だいたい寝ています。カーソルを乗せて撫でると、起きてお手をしたり、転がったり。Mac用のデスクトップマスコット「ビスケット」。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ビスケット — あなたのMacに住みつく、撫でると起きる犬">
+<meta property="og:description" content="画面のすみで、だいたい寝ています。カーソルを乗せて撫でると、起きてお手をしたり、転がったり。">
+<meta property="og:url" content="https://fcpanna0328-create.github.io/dog-desktop-pet/">
+<meta property="og:image" content="https://fcpanna0328-create.github.io/dog-desktop-pet/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <a class="brand" href="#top" aria-label="ビスケット トップへ">
+    <img src="tray_icon@2x.png" alt="" width="22" height="22">
+    <span>ビスケット</span>
+  </a>
+  <a class="head-link" href="#download">ダウンロード</a>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <h1><span class="nw">あなたのMacに、</span><span class="nw">ビスケットが住みつきます。</span></h1>
+    <p class="lead"><span class="nw">画面のすみで、だいたい寝ています。</span><span class="nw">このページの右下にもいるので、</span><span class="nw"><span class="lead-pointer">カーソルを乗せて撫でてみてください。</span><span class="lead-touch">タップして撫でてみてください。</span></span></p>
+  </section>
+
+  <section class="download" id="download">
+    <div class="download-card">
+      <h2>ビスケットを迎える</h2>
+      <p class="download-lead">Mac用・無料です。</p>
+      <a class="btn" href="https://github.com/fcpanna0328-create/dog-desktop-pet/releases/download/v0.1.0/Biscuit-0.1.0.dmg">ダウンロード<small>Biscuit-0.1.0.dmg・108MB</small></a>
+    </div>
+
+    <ol class="steps">
+      <li><strong>ダウンロード</strong>上のボタンから <code>.dmg</code> をダウンロードします。</li>
+      <li><strong>アプリケーションフォルダへ</strong>ダウンロードした <code>.dmg</code> を開いて、中の Biscuit をアプリケーションフォルダにドラッグします。</li>
+      <li><strong>はじめて開くとき</strong>「開発元を確認できません」と出たら、アイコンを右クリックして「開く」を選んでください。一度許可すれば、次からはふつうに開けます。</li>
+    </ol>
+
+    <p class="req">Intel搭載のMac向けに作っています。Appleシリコン搭載のMacでは、はじめて開くときにRosettaのインストールを求められることがあります。Windows版は準備中です。</p>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <p>ビスケット 0.1.0</p>
+  <p><a href="https://github.com/fcpanna0328-create/dog-desktop-pet">GitHub</a></p>
+</footer>
+
+<!-- Biscuit lives on the page itself: fixed to the window, like the app
+     sitting in the corner of the real screen. -->
+<div class="dog" id="dog" role="img" aria-label="眠っている犬のビスケット">
+  <div class="hint" id="hint"><span class="lead-pointer">カーソルをのせて、なでてみてね</span><span class="lead-touch">タップして、なでてみてね</span></div>
+  <div class="flip"><img src="anim/sleep/sleep_19.webp" alt="" draggable="false"></div>
+</div>
+
+<script src="site.js"></script>
+</body>
+</html>
