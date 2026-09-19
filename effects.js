@@ -31,9 +31,9 @@ function napFactor() {
 }
 
 const LINES = {
-  morning: ['おはよう！', 'ふぁ〜…おはよ', 'きょうもよろしくね'],
-  day: ['わん！', 'あそぼ！', 'なでて〜', 'えへへ', 'もっとなでて！'],
-  evening: ['おかえり！', 'おつかれさま', 'おなかすいた…', 'きょうもがんばったね'],
+  morning: ['おはよう！', 'ふぁ〜…おはよ', 'きょうもよろしくね', 'お散歩行こっ'],
+  day: ['わん！', 'あそぼ！', 'なでて〜', 'えへへ', 'もっとなでて！', 'おやつちょーだい', 'お散歩行こっ'],
+  evening: ['おかえり！', 'おつかれさま', 'おなかすいた…', 'きょうもがんばったね', 'おやつちょーだい', 'お散歩行こっ'],
   night: ['ねむい…', 'まだおきてるの？', 'そろそろねよ？', 'むにゃ…'],
 };
 const ANYTIME = ['わふっ', 'すき！', 'しっぽ、ふってるよ'];
@@ -85,13 +85,12 @@ function zzz() {
   });
 }
 
-// 季節：冬は雪、春は桜、秋は紅葉。夏は出さない
+// 季節：冬は雪、春は桜、それ以外はシャボン玉
 function season(d = new Date()) {
   const m = d.getMonth() + 1;
   if (m === 12 || m <= 2) return 'snow';
   if (m === 3 || m === 4) return 'sakura';
-  if (m >= 9 && m <= 11) return 'autumn';
-  return null;
+  return 'soap';
 }
 function seasonal() {
   const s = season();
@@ -99,7 +98,18 @@ function seasonal() {
   const common = { left: `${rand(4, 92)}%`, '--sway': `${rand(-26, 26).toFixed(0)}px`, animationDuration: `${rand(5.5, 8).toFixed(1)}s` };
   if (s === 'snow') spawn('flake snow', '●', { ...common, fontSize: `${rand(4, 7).toFixed(0)}px` });
   if (s === 'sakura') spawn('flake sakura', '', { ...common });
-  if (s === 'autumn') spawn('flake leaf', pick(['🍁', '🍂']), { ...common, fontSize: `${rand(10, 14).toFixed(0)}px` });
+  if (s === 'soap') {
+    // シャボン玉は下から、ふわふわ揺れながら昇って、最後にぱちんと消える
+    const size = rand(10, 22);
+    spawn('soap', '', {
+      left: `${rand(8, 84)}%`,
+      top: `${rand(62, 82)}%`,
+      width: `${size.toFixed(0)}px`,
+      height: `${size.toFixed(0)}px`,
+      '--sway': `${rand(-22, 22).toFixed(0)}px`,
+      animationDuration: `${rand(4.8, 7).toFixed(1)}s`,
+    });
+  }
 }
 
 // ---- 見張り（0.1秒ごと） ----

@@ -92,7 +92,6 @@ html, body {
   animation: fx-fall 6.5s linear forwards;
 }
 .fx.snow  { color: #fff; text-shadow: 0 0 2px rgba(80,110,150,.55); }
-.fx.leaf  { filter: drop-shadow(0 0 1px #fff); }
 .fx.sakura {
   width: 8px; height: 6px;
   border-radius: 60% 10% 60% 10%;
@@ -137,4 +136,28 @@ html, body {
 #bubble.show {
   opacity: 1;
   transform: translate(-50%, 0) scale(1);
+}
+
+/* シャボン玉：虹色のふちと白い光。白い画面でも見えるよう、ふちに薄い影 */
+.fx.soap {
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0 9%, rgba(255,255,255,0) 22%),
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,0) 0 52%,
+      rgba(150,210,255,.28) 64%,
+      rgba(255,170,230,.34) 76%,
+      rgba(170,255,225,.42) 88%,
+      rgba(255,236,150,.45) 97%);
+  border: 1px solid rgba(255,255,255,.75);
+  box-shadow: inset 0 0 3px rgba(140,190,255,.55), 0 0 2px rgba(90,130,190,.35);
+  animation: fx-soap 6s ease-in-out forwards;
+}
+@keyframes fx-soap {
+  0%   { transform: translate(0, 0) scale(.5); opacity: 0; }
+  10%  { transform: translate(0, -8px) scale(.9); opacity: 1; }
+  35%  { transform: translate(var(--sway, 0), -48px) scale(1) rotate(8deg); }
+  60%  { transform: translate(calc(var(--sway, 0) * -0.6), -92px) scale(1.04) rotate(-6deg); }
+  88%  { transform: translate(calc(var(--sway, 0) * 0.4), -128px) scale(1.06); opacity: .95; }
+  100% { transform: translate(calc(var(--sway, 0) * 0.4), -134px) scale(1.5); opacity: 0; }
 }
