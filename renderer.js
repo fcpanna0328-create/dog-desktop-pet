@@ -291,11 +291,27 @@ async function doSniff() {
 }
 
 async function doPaw() {
-  await playFrames(FRAME_SETS.paw, { fps: 10, times: 2, breakIf: () => !petting });
+  await playFrames(FRAME_SETS.paw, {
+    fps: 10,
+    times: 2,
+    breakIf: () => !petting,
+    // 上げた手のそばに「ぱふっ」
+    onFrame: (i, rep) => {
+      if (i === 0 && rep === 0 && typeof popWord === 'function') popWord('ぱふっ');
+    },
+  });
 }
 
 async function doSpin() {
-  await playFrames(FRAME_SETS.spin, { fps: 10, times: 2, breakIf: () => !petting });
+  await playFrames(FRAME_SETS.spin, {
+    fps: 10,
+    times: 2,
+    breakIf: () => !petting,
+    // 頭の上あたりに「くるっ」
+    onFrame: (i, rep) => {
+      if (i === 0 && rep === 0 && typeof popWord === 'function') popWord('くるっ', { left: [30, 42], top: [20, 28] });
+    },
+  });
 }
 
 async function doStandIdle() {
@@ -314,7 +330,15 @@ async function doLick() {
 async function doRun() {
   // Runs in place like doWalkInPlace -- the window deliberately doesn't
   // move so the dog doesn't dash out from under the cursor mid-pet.
-  await playFrames(FRAME_SETS.run, { fps: 14, times: 2, breakIf: () => !petting });
+  await playFrames(FRAME_SETS.run, {
+    fps: 14,
+    times: 2,
+    breakIf: () => !petting,
+    // 走っている後ろの足もとに「タタタッ」
+    onFrame: (i, rep) => {
+      if (i === 0 && rep === 0 && typeof popWord === 'function') popWord('タタタッ', { left: [46, 50], top: [70, 74] });
+    },
+  });
 }
 
 async function doRoll() {

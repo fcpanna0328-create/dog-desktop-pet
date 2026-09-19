@@ -86,11 +86,14 @@ function zzz() {
 }
 
 // マンガの効果音のような文字（「ゴロン」など）。動きに合わせて renderer.js から呼ぶ
-function popWord(text) {
+// 位置は動きごとに変える（left/top の範囲を % で渡す。省略時は左上のあたり）
+function popWord(text, pos = {}) {
   if (!fxEnabled) return;
+  const [l0, l1] = pos.left || [4, 12];
+  const [t0, t1] = pos.top || [30, 38];
   spawn('onoma', text, {
-    left: `${rand(4, 12)}%`,
-    top: `${rand(30, 38)}%`,
+    left: `${rand(l0, l1)}%`,
+    top: `${rand(t0, t1)}%`,
   });
 }
 
@@ -159,6 +162,6 @@ setInterval(() => {
   // 季節のものは静かに、ときどきだけ（撫でているあいだは少し多め）
   if (now >= nextSeason) {
     seasonal();
-    nextSeason = now + (isPetting ? rand(1200, 2000) : rand(4500, 7000));
+    nextSeason = now + (isPetting ? rand(1800, 2800) : rand(4500, 7000));
   }
 }, 100);
