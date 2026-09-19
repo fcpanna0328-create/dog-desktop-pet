@@ -85,6 +85,15 @@ function zzz() {
   });
 }
 
+// マンガの効果音のような文字（「ゴロン」など）。動きに合わせて renderer.js から呼ぶ
+function popWord(text) {
+  if (!fxEnabled) return;
+  spawn('onoma', text, {
+    left: `${rand(4, 12)}%`,
+    top: `${rand(30, 38)}%`,
+  });
+}
+
 // 季節：冬は雪、春は桜、それ以外はシャボン玉
 function season(d = new Date()) {
   const m = d.getMonth() + 1;

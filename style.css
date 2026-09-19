@@ -161,3 +161,23 @@ html, body {
   88%  { transform: translate(calc(var(--sway, 0) * 0.4), -128px) scale(1.06); opacity: .95; }
   100% { transform: translate(calc(var(--sway, 0) * 0.4), -134px) scale(1.5); opacity: 0; }
 }
+
+/* 効果音の文字（ゴロン など）：ぽんっと出て、少し揺れて消える */
+.fx.onoma {
+  font: 900 21px/1 "Hiragino Maru Gothic ProN", "Hiragino Sans", -apple-system, sans-serif;
+  color: #ff8a3d;
+  letter-spacing: 1px;
+  -webkit-text-stroke: 4px #fff;
+  paint-order: stroke fill;
+  text-shadow: 0 2px 3px rgba(120, 60, 20, .25);
+  transform-origin: 30% 70%;
+  animation: fx-onoma 1.7s ease-out forwards;
+}
+@keyframes fx-onoma {
+  0%   { transform: scale(.2) rotate(-18deg); opacity: 0; }
+  14%  { transform: scale(1.25) rotate(-8deg); opacity: 1; }
+  24%  { transform: scale(.95) rotate(-12deg); }
+  34%  { transform: scale(1.05) rotate(-10deg); }
+  75%  { transform: scale(1) rotate(-10deg) translateY(-2px); opacity: 1; }
+  100% { transform: scale(1) rotate(-10deg) translateY(-10px); opacity: 0; }
+}

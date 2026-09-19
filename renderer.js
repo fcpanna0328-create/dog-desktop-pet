@@ -318,7 +318,15 @@ async function doRun() {
 }
 
 async function doRoll() {
-  await playFrames(FRAME_SETS.roll, { fps: 10, times: 2, breakIf: () => !petting });
+  await playFrames(FRAME_SETS.roll, {
+    fps: 10,
+    times: 2,
+    breakIf: () => !petting,
+    // 仰向けになった最初のコマで「ゴロン」（popWord は effects.js）
+    onFrame: (i, rep) => {
+      if (i === 0 && rep === 0 && typeof popWord === 'function') popWord('ゴロン');
+    },
+  });
 }
 
 async function doBow() {
