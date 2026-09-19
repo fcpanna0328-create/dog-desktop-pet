@@ -1,8 +1,32 @@
 const { app, BrowserWindow, ipcMain, screen, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { execFile } = require('child_process');
 
 let win = null;
+
+// ---- 設定（いまはエフェクトのオン/オフだけ） ----
+// ユーザーごとの保存場所に置くので、アプリを入れ直しても残る。
+const SETTINGS_DEFAULTS = { effects: true };
+function settingsPath() {
+  return path.join(app.getPath('userData'), 'settings.json');
+}
+function loadSettings() {
+  try {
+    return { ...SETTINGS_DEFAULTS, ...JSON.parse(fs.readFileSync(settingsPath(), 'utf8')) };
+  } catch (e) {
+    return { ...SETTINGS_DEFAULTS };
+  }
+}
+function saveSettings(next) {
+  try {
+    fs.mkdirSync(path.dirname(settingsPath()), { recursive: true });
+    fs.writeFileSync(settingsPath(), JSON.stringify(next, null, 2));
+  } catch (e) {
+    // 保存できなくても動きは止めない
+  }
+}
+let settings = null;
 let tray = null;
 let isQuitting = false;
 
@@ -73,6 +97,8 @@ function createWindow() {
     });
     lastWindowMoveAt = Date.now();
   });
+
+  ipcMain.handle('get-settings', () => settings);
 
   ipcMain.handle('get-screen-info', () => ({
     screenW,
@@ -270,6 +296,16 @@ function buildTrayMenu() {
     },
     { type: 'separator' },
     {
+      label: 'エフェクト（ハート・吹き出し・季節）',
+      type: 'checkbox',
+      checked: settings.effects !== false,
+      click: (menuItem) => {
+        settings = { ...settings, effects: menuItem.checked };
+        saveSettings(settings);
+        if (win && !win.isDestroyed()) win.webContents.send('settings', settings);
+      },
+    },
+    {
       label: 'ログイン時に自動起動',
       type: 'checkbox',
       checked: openAtLogin,
@@ -297,6 +333,7 @@ function createTray() {
 }
 
 app.whenReady().then(() => {
+  settings = loadSettings();
   // This is a menu-bar style utility app, so it doesn't need a Dock icon
   // taking up space (macOS only).
   if (process.platform === 'darwin' && app.dock) {

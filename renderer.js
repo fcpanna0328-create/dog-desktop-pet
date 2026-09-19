@@ -91,6 +91,8 @@ function wait(ms) {
 // proximity radius anymore, so the cursor can move freely elsewhere on
 // screen without interrupting anything.
 let petting = false;
+// 呼吸しながら寝ているあいだだけ true（effects.js が Zzz を出すのに使う）
+let asleep = false;
 if (window.dogAPI && window.dogAPI.onCursorStatus) {
   window.dogAPI.onCursorStatus((data) => {
     petting = data.over;
@@ -177,13 +179,17 @@ async function goToSleep() {
   // cursor happens to land during the gesture, breakIf() below catches it
   // and hands straight off to the normal wake-for-petting flow.
   while (!petting) {
-    const napDeadline = Date.now() + IDLE_YAWN_AVG_MS * (0.5 + Math.random());
+    // 夜は眠りが深く、仕草の間隔が長くなる（napFactor は effects.js）
+    const nightly = typeof napFactor === 'function' ? napFactor() : 1;
+    const napDeadline = Date.now() + IDLE_YAWN_AVG_MS * nightly * (0.5 + Math.random());
+    asleep = true;
     // eslint-disable-next-line no-await-in-loop
     await playFrames(breathingFrames, {
       fps: 4,
       times: Infinity,
       breakIf: () => petting || Date.now() >= napDeadline,
     });
+    asleep = false;
     if (petting) return;
 
     const gesture = idleSleepGestures[Math.floor(Math.random() * idleSleepGestures.length)];

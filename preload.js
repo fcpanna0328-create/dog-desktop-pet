@@ -10,4 +10,7 @@ contextBridge.exposeInMainWorld('dogAPI', {
   // hand/grab cursor actually render).
   getWindowBoundsSync: () => ipcRenderer.sendSync('get-window-bounds-sync'),
   moveWindowTo: (x, y) => ipcRenderer.send('move-window-to', { x, y }),
+  // エフェクトのオン/オフ（メニューバーから切りかえる）
+  getSettings: () => ipcRenderer.invoke('get-settings'),
+  onSettings: (callback) => ipcRenderer.on('settings', (_event, data) => callback(data)),
 });

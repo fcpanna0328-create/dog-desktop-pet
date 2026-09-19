@@ -10,6 +10,7 @@ html, body {
 }
 
 #stage {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -44,4 +45,96 @@ html, body {
   max-width: 90%;
   -webkit-user-drag: none;
   pointer-events: none;
+}
+
+/* ---- かわいさのエフェクト（effects.js） ---- */
+#fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fx {
+  position: absolute;
+  pointer-events: none;
+  line-height: 1;
+  will-change: transform, opacity;
+}
+/* 撫でているとき：ハートがふわっと昇って消える */
+.fx.heart {
+  color: #ff4f7b;
+  text-shadow: 0 0 2px #fff, 0 0 3px #fff;
+  animation: fx-rise 1.6s ease-out forwards;
+}
+@keyframes fx-rise {
+  0%   { transform: translate(0, 6px) scale(0.4); opacity: 0; }
+  15%  { transform: translate(0, 0) scale(1); opacity: 1; }
+  65%  { opacity: 1; }
+  100% { transform: translate(var(--sway, 0), -54px) scale(0.9); opacity: 0; }
+}
+/* 寝ているとき：Zがななめ上へ */
+.fx.zzz {
+  color: #4a79c2;
+  font-weight: 900;
+  font-family: -apple-system, "Hiragino Maru Gothic ProN", sans-serif;
+  text-shadow: 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff;
+  animation: fx-zzz 2.8s ease-out forwards;
+}
+@keyframes fx-zzz {
+  0%   { transform: translate(0, 0) scale(0.6); opacity: 0; }
+  15%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translate(30px, -56px) scale(1.3); opacity: 0; }
+}
+/* 季節：上からゆっくり舞い落ちる */
+.fx.flake {
+  top: -12px;
+  animation: fx-fall 6.5s linear forwards;
+}
+.fx.snow  { color: #fff; text-shadow: 0 0 2px rgba(80,110,150,.55); }
+.fx.leaf  { filter: drop-shadow(0 0 1px #fff); }
+.fx.sakura {
+  width: 8px; height: 6px;
+  border-radius: 60% 10% 60% 10%;
+  background: #ffc0d2;
+  box-shadow: 0 0 1px rgba(200,90,120,.4);
+}
+@keyframes fx-fall {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: .95; }
+  50%  { transform: translate(var(--sway, 0), 110px) rotate(160deg); }
+  90%  { opacity: .9; }
+  100% { transform: translate(calc(var(--sway, 0) * -0.4), 215px) rotate(320deg); opacity: 0; }
+}
+/* ひとこと吹き出し（上のまん中） */
+#bubble {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  max-width: 150px;
+  padding: 5px 10px;
+  border-radius: 12px;
+  background: #fff;
+  color: #3a3230;
+  font: 700 11px/1.35 -apple-system, "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(60, 40, 30, .22);
+  transform: translate(-50%, 4px) scale(.9);
+  opacity: 0;
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+}
+#bubble::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-bottom: 0;
+  border-top-color: #fff;
+}
+#bubble.show {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
 }
