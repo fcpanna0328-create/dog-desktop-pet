@@ -422,3 +422,31 @@ h2 {
 .news img { display: block; width: 100%; height: auto; border-radius: 18px; background: #fbf6ef; }
 .news ul { margin: 18px 0 0; padding-left: 1.2em; line-height: 1.9; }
 .news li strong { color: var(--ink); }
+
+/* ---- link to the guide page ---- */
+.guide-link { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+.guide-link a {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 16px;
+  padding: 18px 24px; border: 1.5px solid var(--line); border-radius: 18px;
+  text-decoration: none; background: #fff8;
+}
+.guide-link a:hover { border-color: var(--accent); }
+.guide-link span { color: var(--accent-deep); font-weight: 700; font-size: 15px; }
+
+/* ---- guide page ---- */
+.article { max-width: 720px; margin: 0 auto; padding: 8px 24px 24px; }
+.article h1 { font-size: clamp(24px, 5vw, 36px); line-height: 1.4; margin: 12px 0 8px; }
+.article .lead { color: var(--ink-soft); margin: 0 0 28px; }
+.article h2 { margin: 44px 0 10px; }
+.article p { margin: 0 0 14px; }
+.article ul, .article ol { padding-left: 1.3em; }
+.article img { display: block; width: 100%; height: auto; border-radius: 18px; background: #fbf6ef; margin: 18px 0; }
+.article .poses { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin: 18px 0; }
+.article .poses figure { margin: 0; text-align: center; font-size: 13px; color: var(--ink-soft); }
+.article .poses img { margin: 0 0 4px; aspect-ratio: 1; object-fit: contain; }
+.article dl { margin: 0; }
+.article dt { font-weight: 900; margin-top: 18px; }
+.article dt::before { content: "Q. "; color: var(--accent); }
+.article dd { margin: 4px 0 0; color: var(--ink-soft); }
+.article .cta { text-align: center; margin: 48px 0 8px; }
+.crumb { font-size: 13px; color: var(--ink-soft); }
