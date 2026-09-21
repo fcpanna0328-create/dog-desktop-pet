@@ -360,11 +360,54 @@ async function doBow() {
   await playFrames(FRAME_SETS.bow, { fps: 10, times: 1, breakIf: () => !petting });
 }
 
+// ---- 止め絵のポーズ（2026-09 追加） ----
+// 1ポーズ1枚の絵に、揺れ・跳ね・傾きなどの動きを CSS で付けて見せる。
+// 絵は assets/poses/ にあり、全部同じ大きさの画布に下そろえで置いてある。
+const POSES = {
+  goron: 'assets/poses/goron.png',
+  kashige: 'assets/poses/kashige.png',
+  ureshii: 'assets/poses/ureshii.png',
+  fuse: 'assets/poses/fuse.png',
+  dakko: 'assets/poses/dakko.png',
+  furifuri: 'assets/poses/furifuri.png',
+  osumashi: 'assets/poses/osumashi.png',
+};
+Object.values(POSES).forEach((src) => { const img = new Image(); img.src = src; });
+
+// motion は style.css の .m-◯◯ に対応。ms のあいだ、撫でている限り続ける
+async function doPose(name, motion, ms, onStart) {
+  setFlip(false);
+  const cls = `m-${motion}`;
+  sprite.classList.add(cls);
+  if (onStart) onStart();
+  const frames = Array(Math.max(1, Math.round(ms / 100))).fill(POSES[name]);
+  await playFrames(frames, { fps: 10, times: 1, breakIf: () => !petting });
+  sprite.classList.remove(cls);
+}
+const fxWord = (w, pos) => { if (typeof popWord === 'function') popWord(w, pos); };
+const fxSay = (t) => { if (typeof say === 'function') say(t); };
+
+const doGoronPose = () => doPose('goron', 'rock', 3200, () => fxWord('ゴロン'));
+const doKashige = () => doPose('kashige', 'tilt', 3400, () => {
+  fxWord('？', { left: [62, 70], top: [22, 28] });
+  if (Math.random() < 0.5) fxSay('なあに？');
+});
+const doUreshii = () => doPose('ureshii', 'hop', 3000, () => fxWord('ぴょん', { left: [58, 66], top: [26, 32] }));
+const doFuse = () => doPose('fuse', 'breathe', 3600, () => fxWord('ぺたん', { left: [6, 14], top: [48, 54] }));
+const doDakko = () => doPose('dakko', 'sway', 3400, () => fxSay('だっこして〜'));
+const doFurifuri = () => doPose('furifuri', 'wiggle', 3000, () => fxWord('ふりふり', { left: [40, 46], top: [30, 36] }));
+const doOsumashi = () => doPose('osumashi', 'proud', 3200, () => {
+  fxWord('キリッ', { left: [52, 58], top: [24, 30] });
+  if (typeof sparkle === 'function') sparkle(4);
+});
+
 // The grab-bag of reactions once the intro (wake -> walk -> sniff) is
 // done. Picked at random for as long as petting continues.
 const randomReactions = [
   doWalk, doSniff, doPaw, doSpin, doStandIdle, doSmile, wakeUpAndStretch,
   doLick, doRun, doRoll, doBow,
+  // 止め絵のポーズ
+  doGoronPose, doKashige, doUreshii, doFuse, doDakko, doFurifuri, doOsumashi,
 ];
 
 function pickRandomReaction() {

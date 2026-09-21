@@ -97,6 +97,18 @@ function popWord(text, pos = {}) {
   });
 }
 
+// おすましのときのキラキラ
+function sparkle(n = 3) {
+  if (!fxEnabled) return;
+  for (let i = 0; i < n; i += 1) {
+    setTimeout(() => spawn('spark', '✦', {
+      left: `${rand(12, 82)}%`,
+      top: `${rand(34, 70)}%`,
+      fontSize: `${rand(10, 16).toFixed(0)}px`,
+    }), i * 180);
+  }
+}
+
 // 季節：冬は雪、春は桜、それ以外はシャボン玉
 function season(d = new Date()) {
   const m = d.getMonth() + 1;

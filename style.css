@@ -164,6 +164,7 @@ html, body {
 
 /* 効果音の文字（ゴロン など）：ぽんっと出て、少し揺れて消える */
 .fx.onoma {
+  white-space: nowrap;
   font: 900 21px/1 "Hiragino Maru Gothic ProN", "Hiragino Sans", -apple-system, sans-serif;
   color: #ff8a3d;
   letter-spacing: 1px;
@@ -180,4 +181,32 @@ html, body {
   34%  { transform: scale(1.05) rotate(-10deg); }
   75%  { transform: scale(1) rotate(-10deg) translateY(-2px); opacity: 1; }
   100% { transform: scale(1) rotate(-10deg) translateY(-10px); opacity: 0; }
+}
+
+/* ---- 止め絵のポーズの動き（renderer.js の doPose） ---- */
+#sprite { transform-origin: 50% 100%; }
+#sprite.m-tilt    { transform-origin: 50% 78%; animation: m-tilt 1.7s ease-in-out infinite alternate; }
+#sprite.m-hop     { animation: m-hop .5s ease-out infinite; }
+#sprite.m-breathe { animation: m-breathe 1.8s ease-in-out infinite; }
+#sprite.m-sway    { animation: m-sway .9s ease-in-out infinite alternate; }
+#sprite.m-wiggle  { animation: m-wiggle .22s ease-in-out infinite alternate; }
+#sprite.m-proud   { animation: m-proud .6s ease-out forwards; }
+#sprite.m-rock    { transform-origin: 50% 88%; animation: m-rock .8s ease-in-out infinite alternate; }
+@keyframes m-tilt    { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+@keyframes m-hop     { 0% { transform: translateY(0) scale(1.03, .97); } 35% { transform: translateY(-13px) scale(.98, 1.02); } 70% { transform: translateY(0) scale(1.03, .97); } 100% { transform: translateY(0) scale(1, 1); } }
+@keyframes m-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.015, .985); } }
+@keyframes m-sway    { from { transform: rotate(-4deg) translateY(0); } to { transform: rotate(4deg) translateY(-3px); } }
+@keyframes m-wiggle  { from { transform: translateX(-3px) rotate(-2deg); } to { transform: translateX(3px) rotate(2deg); } }
+@keyframes m-proud   { 0% { transform: scale(1); } 60% { transform: scale(1.07) translateY(-2px); } 100% { transform: scale(1.05) translateY(-1px); } }
+@keyframes m-rock    { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+/* キラキラ */
+.fx.spark {
+  color: #ffc93c;
+  text-shadow: 0 0 2px #fff, 0 0 4px #fff;
+  animation: fx-spark 1.2s ease-out forwards;
+}
+@keyframes fx-spark {
+  0%   { transform: scale(0) rotate(0deg); opacity: 0; }
+  30%  { transform: scale(1.2) rotate(40deg); opacity: 1; }
+  100% { transform: scale(.4) rotate(90deg); opacity: 0; }
 }
