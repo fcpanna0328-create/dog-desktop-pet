@@ -294,6 +294,26 @@ function buildTrayMenu() {
         if (win) win.hide();
       },
     },
+    {
+      // 動きはふだんランダムなので、見たいものをすぐ見られるように
+      label: '動きを見る',
+      submenu: [
+        ['wake', 'あくび・のび'], ['walk', 'おさんぽ（歩く）'], ['sniff', 'クンクン'],
+        ['paw', 'お手（ぱふっ）'], ['spin', 'くるっと回る'], ['run', '走る（タタタッ）'],
+        ['roll', '転がる（ゴロン）'], ['stand', 'まったり'], ['smile', 'にっこり'],
+        ['lick', '手をなめる'], ['bow', 'はしゃいでお辞儀'],
+        null,
+        ['goronPose', 'ごろん'], ['kashige', '首かしげ'], ['ureshii', 'うれしい'],
+        ['fuse', '伏せ'], ['dakko', '抱っこして'], ['furifuri', '尻尾ふりふり'], ['osumashi', 'おすまし'],
+      ].map((item) => (item === null ? { type: 'separator' } : {
+        label: item[1],
+        click: () => {
+          if (!win) createWindow();
+          win.show();
+          win.webContents.send('play-action', item[0]);
+        },
+      })),
+    },
     { type: 'separator' },
     {
       label: 'エフェクト（ハート・吹き出し・季節）',

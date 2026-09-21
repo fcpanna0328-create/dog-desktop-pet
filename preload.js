@@ -13,4 +13,6 @@ contextBridge.exposeInMainWorld('dogAPI', {
   // エフェクトのオン/オフ（メニューバーから切りかえる）
   getSettings: () => ipcRenderer.invoke('get-settings'),
   onSettings: (callback) => ipcRenderer.on('settings', (_event, data) => callback(data)),
+  // メニューバーの「動きを見る」
+  onPlayAction: (callback) => ipcRenderer.on('play-action', (_event, name) => callback(name)),
 });

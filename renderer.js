@@ -91,11 +91,14 @@ function wait(ms) {
 // proximity radius anymore, so the cursor can move freely elsewhere on
 // screen without interrupting anything.
 let petting = false;
+// メニューバーの「動きを見る」から選ばれた動き（見本）。寝ていても起きてやって見せる
+let demoAction = null;
+let demoPlaying = false;
 // 呼吸しながら寝ているあいだだけ true（effects.js が Zzz を出すのに使う）
 let asleep = false;
 if (window.dogAPI && window.dogAPI.onCursorStatus) {
   window.dogAPI.onCursorStatus((data) => {
-    petting = data.over;
+    petting = data.over || demoPlaying;
   });
 }
 
@@ -157,8 +160,8 @@ const IDLE_YAWN_AVG_MS = 20000;
 // stop early if petting starts, handing straight off to the normal
 // wake-for-petting flow.
 const idleSleepGestures = [
-  () => playFrames(FRAME_SETS.yawn, { fps: 8, times: 1, breakIf: () => petting }),
-  () => playFrames(FRAME_SETS.lick, { fps: 10, times: 1, breakIf: () => petting }),
+  () => playFrames(FRAME_SETS.yawn, { fps: 8, times: 1, breakIf: () => petting || demoAction !== null }),
+  () => playFrames(FRAME_SETS.lick, { fps: 10, times: 1, breakIf: () => petting || demoAction !== null }),
 ];
 
 async function goToSleep() {
@@ -166,7 +169,7 @@ async function goToSleep() {
   const interrupted = await playFrames(FRAME_SETS.sleep, {
     fps: 10,
     times: 1,
-    breakIf: () => petting,
+    breakIf: () => petting || demoAction !== null,
   });
   if (interrupted) return;
 
@@ -178,7 +181,7 @@ async function goToSleep() {
   // down and keeps napping. This is independent of petting -- if the
   // cursor happens to land during the gesture, breakIf() below catches it
   // and hands straight off to the normal wake-for-petting flow.
-  while (!petting) {
+  while (!petting && !demoAction) {
     // 夜は眠りが深く、仕草の間隔が長くなる（napFactor は effects.js）
     const nightly = typeof napFactor === 'function' ? napFactor() : 1;
     const napDeadline = Date.now() + IDLE_YAWN_AVG_MS * nightly * (0.5 + Math.random());
@@ -187,20 +190,20 @@ async function goToSleep() {
     await playFrames(breathingFrames, {
       fps: 4,
       times: Infinity,
-      breakIf: () => petting || Date.now() >= napDeadline,
+      breakIf: () => petting || demoAction !== null || Date.now() >= napDeadline,
     });
     asleep = false;
-    if (petting) return;
+    if (petting || demoAction) return;
 
     const gesture = idleSleepGestures[Math.floor(Math.random() * idleSleepGestures.length)];
     // eslint-disable-next-line no-await-in-loop
     await gesture();
-    if (petting) return;
+    if (petting || demoAction) return;
 
     // Settle back down to sleep before continuing to nap.
     // eslint-disable-next-line no-await-in-loop
-    await playFrames(FRAME_SETS.sleep, { fps: 10, times: 1, breakIf: () => petting });
-    if (petting) return;
+    await playFrames(FRAME_SETS.sleep, { fps: 10, times: 1, breakIf: () => petting || demoAction !== null });
+    if (petting || demoAction) return;
   }
 }
 
@@ -421,7 +424,7 @@ async function petSession() {
   if (!petting) return;
   await doSniff();
   while (petting) {
-    const reaction = pickRandomReaction();
+    const reaction = demoAction ? takeDemo() : pickRandomReaction();
     // eslint-disable-next-line no-await-in-loop
     await reaction();
     if (!petting) break;
@@ -430,11 +433,44 @@ async function petSession() {
   }
 }
 
+function takeDemo() {
+  const f = demoAction;
+  demoAction = null;
+  return async () => {
+    demoPlaying = true;
+    petting = true;
+    try { await f(); } finally { demoPlaying = false; }
+  };
+}
+
+// メニューバーの「動きを見る」の名前 → 動き
+const DEMO_ACTIONS = {
+  wake: wakeUpAndStretch, walk: doWalk, sniff: doSniff, paw: doPaw, spin: doSpin,
+  stand: doStandIdle, smile: doSmile, lick: doLick, run: doRun, roll: doRoll, bow: doBow,
+  goronPose: doGoronPose, kashige: doKashige, ureshii: doUreshii, fuse: doFuse,
+  dakko: doDakko, furifuri: doFurifuri, osumashi: doOsumashi,
+};
+if (window.dogAPI && window.dogAPI.onPlayAction) {
+  window.dogAPI.onPlayAction((name) => {
+    if (DEMO_ACTIONS[name]) demoAction = DEMO_ACTIONS[name];
+  });
+}
+
 async function mainLoop() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     // eslint-disable-next-line no-await-in-loop
     await goToSleep();
+    if (demoAction && !petting) {
+      // 寝ていたところを起きて、見本をひとつやって見せ、また眠る
+      // eslint-disable-next-line no-await-in-loop
+      await takeDemo()();
+      petting = false;
+      // eslint-disable-next-line no-await-in-loop
+      await wait(300);
+      // eslint-disable-next-line no-continue
+      continue;
+    }
     // eslint-disable-next-line no-await-in-loop
     await petSession();
     // eslint-disable-next-line no-await-in-loop
