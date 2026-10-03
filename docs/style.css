@@ -450,3 +450,9 @@ h2 {
 .article dd { margin: 4px 0 0; color: var(--ink-soft); }
 .article .cta { text-align: center; margin: 48px 0 8px; }
 .crumb { font-size: 13px; color: var(--ink-soft); }
+
+/* 航海広場の応援バッジ（フッターの下の段に、小さめに） */
+.site-foot { flex-wrap: wrap; }
+.site-foot .site-badge { flex-basis: 100%; display: flex; justify-content: center; margin-top: 6px; }
+.site-foot .site-badge img { display: block; width: 160px; height: auto; opacity: .92; transition: opacity .15s ease; }
+.site-foot .site-badge a:hover img { opacity: 1; }
